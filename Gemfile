@@ -8,8 +8,9 @@ ruby '2.2.2'
 group :test do
 
   gem 'capybara'
-  gem 'rspec'
+  gem 'database_cleaner'
   gem 'data_mapper'
   gem 'dm-postgres-adapter'
+  gem 'rspec'
 
 end

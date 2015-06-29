@@ -3,6 +3,8 @@ ENV['RACK_ENV'] = 'test'
 require File.join(File.dirname(__FILE__), '..', 'app/app.rb')
 
 require 'capybara/rspec'
+require 'database_cleaner'
+
 require './app/data_mapper_setup'
 require './app/app'
 
@@ -103,4 +105,17 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
