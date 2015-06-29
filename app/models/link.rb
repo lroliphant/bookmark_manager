@@ -1,3 +1,5 @@
+require 'data_mapper'
+
 # This class corresponds to a table in the database
 # We can use it to manipulate the data
 class Link
