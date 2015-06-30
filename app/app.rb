@@ -16,7 +16,9 @@ class BookmarkManager < Sinatra::Base
 
     tag = Tag.create(name: params[:tag]) # 2. Create a tag for the link
     link.tags << tag # 3. Adding the tag to the link's DataMapper collection.
+
     link.save # 4. Saving the link.
+
 
     redirect to('/links')
   end
