@@ -1,4 +1,5 @@
 env = 'test' # checks for current environment from
+# env = ENV['RACK_ENV'] || 'development'
 
 require 'data_mapper' # get datamapper gem
 
