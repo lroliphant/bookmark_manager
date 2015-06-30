@@ -8,6 +8,8 @@ DataMapper.setup(:default, "postgres://localhost/bookmark_manager_#{env}")
 
 require './app/models/link' # get application code that will use DM
 # require './app/link'
+require './app/models/tag'
+
 
 DataMapper.finalize # finalizes models
 
