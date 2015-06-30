@@ -37,5 +37,9 @@ class BookmarkManager < Sinatra::Base
     erb :'links/index'
   end
 
+  get '/' do
+    redirect '/links'
+  end
+
 
 end
