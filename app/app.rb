@@ -1,8 +1,11 @@
 require 'sinatra/base'
-# require 'data_mapper'
-require './app/data_mapper_setup.rb' # may need to remove this if heroku doesn't work...WHY OH WHY?
+require './app/data_mapper_setup.rb'
 
 class BookmarkManager < Sinatra::Base
+
+  enable :sessions
+  set :sessions_secret, 'super secret'
+
 
   get '/links' do
     @links = Link.all
@@ -22,11 +25,8 @@ class BookmarkManager < Sinatra::Base
       link.tags << Tag.create(name: tag)
     end
     # 3. Adding the tag to the link's DataMapper collection.
-
     # p link.tags
-
     link.save # 4. Saving the link.
-
 
     redirect to('/links')
   end
@@ -37,7 +37,7 @@ class BookmarkManager < Sinatra::Base
     erb :'links/index'
   end
 
-  # redirect HP to /links
+  #redirect HP to /links
   get '/' do
     redirect '/links'
   end
@@ -47,9 +47,24 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/users' do
-    User.create(email: params[:email],
-                password: params[:password])
-    redirect to('/links')
+    user = User.create(email: params[:email],
+                password: params[:password],
+                password_confirmation: params[:password_confirmation])
+    session[:user_id] = user.id
+    redirect to('/')
+  end
+
+  # helpers do
+  #   def current_user
+  #     User.get(session[:user_id])
+  #   end
+  # end
+
+  # refactored method with lazy initialization
+  helpers do
+    def current_user
+      @current_user ||= User.get(session[:user_id])
+    end
   end
 
 
