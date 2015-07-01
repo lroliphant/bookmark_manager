@@ -12,6 +12,8 @@ class Link
   property :title,  String
   property :url,    String
 
-  has n, :tags, through: Resource
+  has n, :tags, through: Resource # creates associations - many-to-many relationship - through a join table - representing every combination of a student and a coach/ links and tags - links_tags table
 
 end
+
+# ORM does this - creating relationships between databases

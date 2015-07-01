@@ -1,6 +1,6 @@
 require 'sinatra/base'
 # require 'data_mapper'
-# require_relative 'data_mapper_setup'
+require './app/data_mapper_setup.rb' # may need to remove this if heroku doesn't work...WHY OH WHY?
 
 class BookmarkManager < Sinatra::Base
 
@@ -37,8 +37,19 @@ class BookmarkManager < Sinatra::Base
     erb :'links/index'
   end
 
+  # redirect HP to /links
   get '/' do
     redirect '/links'
+  end
+
+  get '/users/new' do
+    erb :'users/new'
+  end
+
+  post '/users' do
+    User.create(email: params[:email],
+                password: params[:password])
+    redirect to('/links')
   end
 
 
