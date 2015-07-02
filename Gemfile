@@ -8,12 +8,12 @@ ruby '2.2.2'
   gem 'data_mapper'
   gem 'dm-postgres-adapter'
   gem 'bcrypt'
-  gem 'factory_girl'
 
 group :test do
 
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'factory_girl'
   gem 'rspec'
 
 end

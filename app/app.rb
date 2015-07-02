@@ -9,7 +9,6 @@ class BookmarkManager < Sinatra::Base
   set :sessions_secret, 'super secret'
   set :public_folder, Proc.new { File.join(root, '..', 'public') }
 
-
   get '/links' do
     @links = Link.all
     erb :'links/index'
