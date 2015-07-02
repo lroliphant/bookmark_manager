@@ -1,10 +1,13 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require './app/data_mapper_setup.rb'
 
 class BookmarkManager < Sinatra::Base
+  register Sinatra::Flash
 
   enable :sessions
   set :sessions_secret, 'super secret'
+  set :public_folder, Proc.new { File.join(root, '..', 'public') }
 
 
   get '/links' do
@@ -38,20 +41,30 @@ class BookmarkManager < Sinatra::Base
   end
 
   #redirect HP to /links
-  get '/' do
-    redirect '/links'
-  end
+  # get '/' do
+  #   redirect '/links'
+  # end
 
   get '/users/new' do
+    @user = User.new
     erb :'users/new'
   end
 
   post '/users' do
-    user = User.create(email: params[:email],
+    # user = User .new - we just initialize the object
+    # without saving it. It may be invalid
+    @user = User.new(email: params[:email],
                 password: params[:password],
                 password_confirmation: params[:password_confirmation])
-    session[:user_id] = user.id
-    redirect to('/')
+    if @user.save #save returns true/false depending on whether the model is successfully saved to the database.
+      # the user.id will be nil if the user wasn't saved
+      # because of password mismatch
+      session[:user_id] = @user.id
+      redirect to('/links') # is it is not valid we'll show the same form again
+    else
+      flash.now[:notice] = 'Sorry, your passwords do not match'
+      erb :'users/new'
+    end
   end
 
   # helpers do
